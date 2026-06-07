@@ -98,8 +98,9 @@ export function Footer() {
             © {new Date().getFullYear()} Uniloan Solution. All rights reserved.
           </p>
           <p className="text-grey-500 text-xs text-center md:text-right max-w-lg">
-            Disclaimer: Interest rates and terms are indicative. Final approval is
-            determined by respective banks and NBFCs.
+            Disclaimer: Uniloan Solution is an independent education loan consultancy and application facilitation platform. We are not a bank, Non-Banking Financial Company (NBFC), or direct lending institution. All product names, logos, and brands displayed on this website are the property of their respective owners. Their inclusion here is solely to indicate the financial institutions whose lending criteria we assist students in navigating.
+
+Uniloan Solution does not directly issue credit or guarantee loan approvals. By submitting your details on this website, you expressly authorize Uniloan Solution and its verified backend distribution ecosystem partners to process, evaluate, and route your profile information to secure optimal loan offers from these supported institutions.Interest rates and terms are indicative. Final approval is determined by respective banks and NBFCs.
           </p>
         </div>
       </div>

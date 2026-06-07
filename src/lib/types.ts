@@ -58,4 +58,23 @@ export interface ServiceLead {
   updatedAt: string;
 }
 
-export type Lead = EligibilityLead | ContactLead | PartnerInquiry | ServiceLead;
+export interface ReferralEntry {
+  name: string;
+  phone: string;
+  country: string;
+  loanAmount: string;
+}
+
+export interface ReferralLead {
+  id: string;
+  type: "referral";
+  name: string;
+  phone: string;
+  email: string;
+  referrals: ReferralEntry[];
+  status: LeadStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type Lead = EligibilityLead | ContactLead | PartnerInquiry | ServiceLead | ReferralLead;

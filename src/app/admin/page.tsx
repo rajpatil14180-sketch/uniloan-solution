@@ -20,7 +20,7 @@ const STATUS_OPTIONS: LeadStatus[] = [
   "closed",
 ];
 
-const TYPE_OPTIONS = ["all", "eligibility", "contact", "partner", "service"];
+const TYPE_OPTIONS = ["all", "eligibility", "contact", "partner", "service", "referral"];
 
 const STATUS_COLORS: Record<LeadStatus, string> = {
   new: "bg-blue-100 text-blue-700",

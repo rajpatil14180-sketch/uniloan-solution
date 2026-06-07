@@ -32,18 +32,18 @@ export function Header() {
   className="fixed top-0 left-0 right-0 z-50 bg-navy-900/90 backdrop-blur-md shadow-lg"
 >
       <div
-  className={`container-custom flex items-center justify-center gap-8 h-16 md:h-[4.25rem] ${
+  className={`container-custom flex items-center justify-center gap-4 h-16 md:h-[4.25rem] ${
     scrolled ? "" : ""
   }`}
 >
         {/* <NavbarLogo /> */}
 
-        <nav className="hidden xl:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-0.5">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="px-3 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+              className="whitespace-nowrap px-2.5 py-2 text-xs font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/5"
             >
               {link.label}
             </Link>

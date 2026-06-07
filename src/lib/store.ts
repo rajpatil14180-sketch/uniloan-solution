@@ -126,8 +126,10 @@ export function leadsToCSV(leads: Lead[]): string {
         service: lead.service,
         message: lead.message,
       });
+    } else if (lead.type === "referral") {
+      base.details = JSON.stringify({ referrals: lead.referrals });
     } else {
-      base.details = lead.message;
+      base.details = (lead as { message?: string }).message ?? "";
     }
 
     return [

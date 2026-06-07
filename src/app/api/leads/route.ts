@@ -5,6 +5,7 @@ import type {
   ContactLead,
   PartnerInquiry,
   ServiceLead,
+  ReferralLead,
 } from "@/lib/types";
 import { randomUUID } from "crypto";
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString();
     const id = randomUUID();
 
-    let lead: EligibilityLead | ContactLead | PartnerInquiry | ServiceLead;
+    let lead: EligibilityLead | ContactLead | PartnerInquiry | ServiceLead | ReferralLead;
 
     switch (body.type) {
       case "eligibility":
@@ -93,6 +94,19 @@ export async function POST(request: NextRequest) {
           phone: body.phone,
           email: body.email,
           message: body.message || "",
+          status: "new",
+          createdAt: now,
+          updatedAt: now,
+        };
+        break;
+      case "referral":
+        lead = {
+          id,
+          type: "referral",
+          name: body.name,
+          phone: body.phone,
+          email: body.email,
+          referrals: body.referrals ?? [],
           status: "new",
           createdAt: now,
           updatedAt: now,

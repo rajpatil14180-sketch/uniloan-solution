@@ -1,0 +1,19 @@
+[
+  { "partner": "State Bank of India", "file": "/partners/sbi.svg", "source": "wikimedia" },
+  { "partner": "HDFC Bank", "file": "/partners/hdfc.svg", "source": "wikimedia" },
+  { "partner": "Bank of India", "file": "/partners/boi.svg", "source": "svgstack" },
+  { "partner": "Punjab National Bank", "file": "/partners/pnb.svg", "source": "wikimedia" },
+  { "partner": "Bank of Baroda", "file": "/partners/bob.svg", "source": "bankofbaroda.in" },
+  { "partner": "Union Bank of India", "file": "/partners/union.svg", "source": "wikimedia" },
+  { "partner": "Central Bank of India", "file": "/partners/cbi.svg", "source": "wikipedia" },
+  { "partner": "ICICI Bank", "file": "/partners/icici.svg", "source": "wikimedia" },
+  { "partner": "IDFC FIRST Bank", "file": "/partners/idfc.svg", "source": "idfcfirstbank.com" },
+  { "partner": "Axis Bank", "file": "/partners/axis.svg", "source": "wikimedia" },
+  { "partner": "Yes Bank", "file": "/partners/yes.svg", "source": "wikimedia" },
+  { "partner": "HDFC Credila", "file": "/partners/credila.png", "source": "credila.com" },
+  { "partner": "Tata Capital", "file": "/partners/tata.svg", "source": "tatacapital.com" },
+  { "partner": "Poonawalla Fincorp", "file": "/partners/poonawalla.svg", "source": "poonawallafincorp.com" },
+  { "partner": "Avanse", "file": "/partners/avanse.svg", "source": "avanse.com" },
+  { "partner": "Auxilo", "file": "/partners/auxilo.svg", "source": "auxilo.com" },
+  { "partner": "InCred Finance", "file": "/partners/incred.svg", "source": "incred.com" }
+]
