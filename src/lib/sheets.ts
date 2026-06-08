@@ -1,4 +1,4 @@
-import { google } from "googleapis";
+import { google, sheets_v4 } from "googleapis";
 import type { Lead } from "./types";
 
 const TAB_HEADERS: Record<string, string[]> = {
@@ -74,14 +74,42 @@ function leadToRow(lead: Lead): string[] {
 }
 
 function resolvePrivateKey(): string | null {
-  // Prefer the base64 variant — safe to paste in any UI without newline mangling
   const b64 = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY_B64;
   if (b64) return Buffer.from(b64, "base64").toString("utf-8");
 
-  // Fallback: raw key with escaped newlines (works in .env.local but can break in Netlify UI)
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
   if (!raw) return null;
   return raw.includes("\\n") ? raw.replace(/\\n/g, "\n") : raw;
+}
+
+async function ensureTabExists(
+  sheets: sheets_v4.Sheets,
+  spreadsheetId: string,
+  tab: string
+): Promise<boolean> {
+  // Check if tab exists
+  try {
+    await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: `${tab}!A1:A1`,
+    });
+    return true; // tab exists
+  } catch {
+    // Tab doesn't exist — create it
+    try {
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId,
+        requestBody: {
+          requests: [{ addSheet: { properties: { title: tab } } }],
+        },
+      });
+      console.log("[sheets] Created tab:", tab);
+      return false; // tab was just created, needs headers
+    } catch (createErr) {
+      console.error("[sheets] Failed to create tab:", tab, createErr);
+      throw createErr;
+    }
+  }
 }
 
 export async function appendLeadToSheet(lead: Lead): Promise<void> {
@@ -98,8 +126,6 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
     return;
   }
 
-  console.log("[sheets] Connecting — email:", CLIENT_EMAIL, "key starts:", PRIVATE_KEY.slice(0, 27));
-
   const auth = new google.auth.JWT({
     email: CLIENT_EMAIL,
     key: PRIVATE_KEY,
@@ -109,15 +135,25 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
   const sheets = google.sheets({ version: "v4", auth });
   const tab = getTabForLead(lead);
 
-  const existing = await sheets.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range: `${tab}!A1:A1`,
-  });
+  // Ensure the tab exists; if it was just created it returns false (needs headers)
+  const tabExisted = await ensureTabExists(sheets, SPREADSHEET_ID, tab);
+
+  // Check if the existing tab already has headers in A1
+  let hasHeaders = false;
+  if (tabExisted) {
+    try {
+      const existing = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${tab}!A1:A1`,
+      });
+      hasHeaders = !!existing.data.values?.length;
+    } catch {
+      hasHeaders = false;
+    }
+  }
 
   const rows: string[][] = [];
-  if (!existing.data.values?.length) {
-    rows.push(TAB_HEADERS[tab]);
-  }
+  if (!hasHeaders) rows.push(TAB_HEADERS[tab]);
   rows.push(leadToRow(lead));
 
   await sheets.spreadsheets.values.append({
