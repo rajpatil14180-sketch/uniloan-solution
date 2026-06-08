@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import type { Lead, LeadStatus } from "./types";
+import { appendLeadToSheet } from "./sheets";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const LEADS_FILE = path.join(DATA_DIR, "leads.json");
@@ -36,9 +37,18 @@ export async function getAllLeads(): Promise<Lead[]> {
 }
 
 export async function addLead(lead: Lead): Promise<Lead> {
-  const leads = await readLeads();
-  leads.push(lead);
-  await writeLeads(leads);
+  // JSON file write works locally but will fail on Netlify (read-only filesystem) — that's fine
+  try {
+    const leads = await readLeads();
+    leads.push(lead);
+    await writeLeads(leads);
+  } catch {
+    // Silently skip — Google Sheets is the persistent store in production
+  }
+
+  appendLeadToSheet(lead).catch((err) =>
+    console.error("[sheets] failed to append lead:", err)
+  );
   return lead;
 }
 

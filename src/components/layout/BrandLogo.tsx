@@ -22,7 +22,7 @@ export function BrandLogo({
   const markSize =
   size === "footer"
     ? "h-16 w-auto sm:h-20"
-    : "h-12 w-auto sm:h-14 md:h-16";
+    : "h-10 w-auto max-w-[130px] sm:h-12 sm:max-w-none md:h-14";
 
   return (
     <div className={`inline-flex items-center justify-center ${className}`}>

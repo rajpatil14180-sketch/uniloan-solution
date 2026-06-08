@@ -32,11 +32,11 @@ export function Header() {
   className="fixed top-0 left-0 right-0 z-50 bg-navy-900/90 backdrop-blur-md shadow-lg"
 >
       <div
-  className={`container-custom flex items-center justify-center gap-4 h-16 md:h-[4.25rem] ${
+  className={`container-custom flex items-center justify-between gap-4 h-16 md:h-[4.25rem] ${
     scrolled ? "" : ""
   }`}
 >
-        {/* <NavbarLogo /> */}
+        <NavbarLogo />
 
         <nav className="hidden xl:flex items-center gap-0.5">
           {NAV_LINKS.map((link) => (
