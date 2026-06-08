@@ -91,9 +91,8 @@ export function Hero() {
               className="mt-8 hidden lg:flex"
             >
               <MagneticButton
-                href={`https://wa.me/${SITE.whatsapp}`}
+                href="/contact"
                 variant="outline"
-                external
               >
                 <Phone className="w-4 h-4" />
                 Talk To An Expert

@@ -32,9 +32,8 @@ export function FinalCTA() {
               <ArrowRight className="w-4 h-4" />
             </MagneticButton>
             <MagneticButton
-              href={`https://wa.me/${SITE.whatsapp}`}
+              href="/contact"
               variant="outline"
-              external
             >
               <Phone className="w-4 h-4" />
               Talk To An Expert

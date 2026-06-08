@@ -41,9 +41,8 @@ export function ServicePageTemplate({ service }: { service: ServiceData & { slug
             <div className="mt-8 flex flex-wrap gap-4">
               <MagneticButton href="/eligibility">Check Eligibility Free</MagneticButton>
               <MagneticButton
-                href={`https://wa.me/${SITE.whatsapp}`}
+                href="/contact"
                 variant="outline"
-                external
               >
                 Talk To An Expert
               </MagneticButton>
