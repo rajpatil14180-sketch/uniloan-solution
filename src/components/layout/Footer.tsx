@@ -94,9 +94,19 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-grey-500 text-sm">
-            © {new Date().getFullYear()} Uniloan Solution. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <p className="text-grey-500 text-sm">
+              © {new Date().getFullYear()} Uniloan Solution. All rights reserved.
+            </p>
+            <div className="flex gap-4 text-xs">
+              <Link href="/privacy-policy" className="text-grey-500 hover:text-gold-400 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-grey-500 hover:text-gold-400 transition-colors">
+                Terms of Service
+              </Link>
+            </div>
+          </div>
           <p className="text-grey-500 text-xs text-center md:text-right max-w-lg">
             Disclaimer: Uniloan Solution is an independent education loan consultancy and application facilitation platform. We are not a bank, Non-Banking Financial Company (NBFC), or direct lending institution. All product names, logos, and brands displayed on this website are the property of their respective owners. Their inclusion here is solely to indicate the financial institutions whose lending criteria we assist students in navigating.
 

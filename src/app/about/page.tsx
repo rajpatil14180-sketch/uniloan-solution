@@ -1,9 +1,15 @@
-"use client";
-
+import { Metadata } from "next";
 import { Shield, Users, Target, Award } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Stats } from "@/components/home/Stats";
 import { FinalCTA } from "@/components/home/FinalCTA";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about Uniloan Solution — India's specialized education loan consultancy helping students with difficult profiles secure loans from 20+ banks and NBFCs.",
+};
+
 const VALUES = [
   {
     icon: Shield,

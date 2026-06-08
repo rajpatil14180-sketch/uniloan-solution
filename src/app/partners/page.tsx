@@ -1,8 +1,13 @@
-"use client";
-
+import { Metadata } from "next";
 import { Handshake, TrendingUp, Users, Globe } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { PartnerForm } from "@/components/forms/PartnerForm";
+
+export const metadata: Metadata = {
+  title: "Partner With Us",
+  description:
+    "Partner with Uniloan Solution to offer your students access to 20+ education lenders. Ideal for study abroad consultants, schools, and education agencies.",
+};
 
 const BENEFITS = [
   {

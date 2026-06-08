@@ -3,9 +3,9 @@ import { searchLeads, leadsToCSV } from "@/lib/store";
 
 export async function GET(request: NextRequest) {
   const auth = request.headers.get("authorization");
-  const password = process.env.ADMIN_PASSWORD || "uniloan2024";
+  const password = process.env.ADMIN_PASSWORD;
 
-  if (auth !== `Bearer ${password}`) {
+  if (!password || auth !== `Bearer ${password}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
