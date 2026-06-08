@@ -73,11 +73,21 @@ function leadToRow(lead: Lead): string[] {
   }
 }
 
+function resolvePrivateKey(): string | null {
+  // Prefer the base64 variant — safe to paste in any UI without newline mangling
+  const b64 = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY_B64;
+  if (b64) return Buffer.from(b64, "base64").toString("utf-8");
+
+  // Fallback: raw key with escaped newlines (works in .env.local but can break in Netlify UI)
+  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+  if (!raw) return null;
+  return raw.includes("\\n") ? raw.replace(/\\n/g, "\n") : raw;
+}
+
 export async function appendLeadToSheet(lead: Lead): Promise<void> {
-  // Read env vars inside the function — module-level reads can be stale on serverless
   const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
   const CLIENT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const PRIVATE_KEY = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+  const PRIVATE_KEY = resolvePrivateKey();
 
   if (!SPREADSHEET_ID || !CLIENT_EMAIL || !PRIVATE_KEY) {
     console.error("[sheets] Missing env vars:", {
@@ -88,23 +98,17 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
     return;
   }
 
-  // Normalize the private key — Netlify stores \n as literal backslash-n in UI-entered values.
-  // If the key already contains real newlines (e.g. set via CLI), replace is a no-op.
-  const privateKey = PRIVATE_KEY.includes("\\n")
-    ? PRIVATE_KEY.replace(/\\n/g, "\n")
-    : PRIVATE_KEY;
-  console.log("[sheets] Connecting — email:", CLIENT_EMAIL, "key starts:", privateKey.slice(0, 27));
+  console.log("[sheets] Connecting — email:", CLIENT_EMAIL, "key starts:", PRIVATE_KEY.slice(0, 27));
 
   const auth = new google.auth.JWT({
     email: CLIENT_EMAIL,
-    key: privateKey,
+    key: PRIVATE_KEY,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 
   const sheets = google.sheets({ version: "v4", auth });
   const tab = getTabForLead(lead);
 
-  // Check if the tab is empty and needs headers
   const existing = await sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
     range: `${tab}!A1:A1`,
