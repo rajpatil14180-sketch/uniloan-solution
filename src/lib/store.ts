@@ -46,9 +46,12 @@ export async function addLead(lead: Lead): Promise<Lead> {
     // Silently skip — Google Sheets is the persistent store in production
   }
 
-  appendLeadToSheet(lead).catch((err) =>
-    console.error("[sheets] failed to append lead:", err)
-  );
+  // Must be awaited — serverless functions shut down on response, fire-and-forget gets killed
+  try {
+    await appendLeadToSheet(lead);
+  } catch (err) {
+    console.error("[sheets] failed to append lead:", err);
+  }
   return lead;
 }
 
