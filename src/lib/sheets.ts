@@ -1,10 +1,6 @@
 import { google } from "googleapis";
 import type { Lead } from "./types";
 
-const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
-const CLIENT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-const PRIVATE_KEY = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
-
 const TAB_HEADERS: Record<string, string[]> = {
   "Eligibility Leads": [
     "ID", "Date", "Status", "Source", "Name", "Phone", "Email",
@@ -78,11 +74,30 @@ function leadToRow(lead: Lead): string[] {
 }
 
 export async function appendLeadToSheet(lead: Lead): Promise<void> {
-  if (!SPREADSHEET_ID || !CLIENT_EMAIL || !PRIVATE_KEY) return;
+  // Read env vars inside the function — module-level reads can be stale on serverless
+  const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  const CLIENT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const PRIVATE_KEY = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+
+  if (!SPREADSHEET_ID || !CLIENT_EMAIL || !PRIVATE_KEY) {
+    console.error("[sheets] Missing env vars:", {
+      SPREADSHEET_ID: !!SPREADSHEET_ID,
+      CLIENT_EMAIL: !!CLIENT_EMAIL,
+      PRIVATE_KEY: !!PRIVATE_KEY,
+    });
+    return;
+  }
+
+  // Normalize the private key — Netlify stores \n as literal backslash-n in UI-entered values.
+  // If the key already contains real newlines (e.g. set via CLI), replace is a no-op.
+  const privateKey = PRIVATE_KEY.includes("\\n")
+    ? PRIVATE_KEY.replace(/\\n/g, "\n")
+    : PRIVATE_KEY;
+  console.log("[sheets] Connecting — email:", CLIENT_EMAIL, "key starts:", privateKey.slice(0, 27));
 
   const auth = new google.auth.JWT({
     email: CLIENT_EMAIL,
-    key: PRIVATE_KEY.replace(/\\n/g, "\n"),
+    key: privateKey,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 
@@ -107,4 +122,6 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
     valueInputOption: "USER_ENTERED",
     requestBody: { values: rows },
   });
+
+  console.log("[sheets] Appended lead", lead.id, "to tab:", tab);
 }
