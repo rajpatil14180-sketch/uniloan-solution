@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
           <div>
             <h2 className="text-xl font-bold text-navy-900 mb-3">1. Who We Are</h2>
             <p>
-              Uniloan Solution (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is an education loan consultancy based in India. We help students obtain education loans through our network of banks and NBFCs. Our contact details: {SITE.email} | {SITE.phone}.
+              Uniloan Solution (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is an independent education loan consultancy based in India. We guide students through the process of identifying, applying for, and securing education loans from banks and financial institutions. We are not a bank, NBFC, or direct lending institution. Our contact details: {SITE.email} | {SITE.phone}.
             </p>
           </div>
 
@@ -40,8 +40,8 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-bold text-navy-900 mb-3">3. How We Use Your Information</h2>
             <p>We use the information to:</p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li>Assess your education loan eligibility</li>
-              <li>Connect you with suitable lending partners</li>
+              <li>Assess your education loan eligibility and advise on suitable options</li>
+              <li>Guide you through the loan application process</li>
               <li>Respond to your enquiries and provide consultancy services</li>
               <li>Send service updates relevant to your application</li>
               <li>Improve our website and services</li>
@@ -53,10 +53,11 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-bold text-navy-900 mb-3">4. Data Sharing</h2>
             <p>We may share your information with:</p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li><strong>Lending partners</strong> (banks and NBFCs) — only with your consent and for the purpose of loan processing</li>
+              <li><strong>Financial institutions</strong> — banks and NBFCs you choose to apply to, only with your explicit consent and solely for the purpose of processing your loan application</li>
               <li><strong>Service providers</strong> — such as Google (for data storage via Google Sheets) under their respective privacy agreements</li>
-              <li><strong>Legal authorities</strong> — if required by law</li>
+              <li><strong>Legal authorities</strong> — if required by applicable law</li>
             </ul>
+            <p className="mt-3">We do not have formal tie-ups or referral agreements with any bank or NBFC. Any sharing of your information with a financial institution is done at your direction and with your consent.</p>
           </div>
 
           <div>
