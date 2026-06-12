@@ -41,7 +41,7 @@ export function Hero() {
     <img
       src="/logo.png"
       alt="Uniloan Solution"
-      className="w-[220px] sm:w-[260px] md:w-auto md:h-36 lg:h-44 h-auto object-contain"
+      className="h-16 sm:h-20 md:h-36 lg:h-44 w-auto object-contain"
     />
   </motion.div>
             <motion.h1
