@@ -11,9 +11,15 @@ export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [honeypot, setHoneypot] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) return;
+    if (!/^[+\d\s\-()]{7,20}$/.test(form.phone)) {
+      setError("Please enter a valid phone number.");
+      return;
+    }
     setSubmitting(true);
     setError("");
     try {
@@ -92,6 +98,17 @@ export function ContactForm() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Honeypot — invisible to real users, filled only by bots */}
+                  <input
+                    type="text"
+                    name="_hp"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+                  />
                   <input
                     required
                     placeholder="Full Name"
@@ -126,7 +143,7 @@ export function ContactForm() {
                     className="w-full px-4 py-3 rounded-xl border border-grey-200 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 resize-none"
                   />
                   {error && <p className="text-red-500 text-sm">{error}</p>}
-                  <MagneticButton type="submit" className="w-full">
+                  <MagneticButton type="submit" className="w-full" disabled={submitting}>
                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Send Message"}
                   </MagneticButton>
                 </form>

@@ -63,6 +63,8 @@ const inputClass =
 const selectClass =
   "w-full px-4 py-3 rounded-xl border border-grey-200 bg-white text-navy-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all appearance-none cursor-pointer";
 
+const PHONE_RE = /^[+\d\s\-()]{7,20}$/;
+
 export function ReferralForm() {
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -73,8 +75,10 @@ export function ReferralForm() {
   });
   const [showReferral2, setShowReferral2] = useState(false);
   const [errors, setErrors] = useState<ErrorMap>({});
+  const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const clearError = (key: keyof ErrorMap) =>
     setErrors((e) => ({ ...e, [key]: undefined }));
@@ -93,17 +97,17 @@ export function ReferralForm() {
     const next: ErrorMap = {};
     if (!form.name.trim()) next.name = "Required";
     if (!form.phone.trim()) next.phone = "Required";
-    else if (!/^[+\d\s-]{10,}$/.test(form.phone)) next.phone = "Invalid phone number";
+    else if (!PHONE_RE.test(form.phone)) next.phone = "Invalid phone number";
     if (!form.email.trim()) next.email = "Required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = "Invalid email";
     if (!form.referral1.name.trim()) next.referral1_name = "Required";
     if (!form.referral1.phone.trim()) next.referral1_phone = "Required";
-    else if (!/^[+\d\s-]{10,}$/.test(form.referral1.phone))
+    else if (!PHONE_RE.test(form.referral1.phone))
       next.referral1_phone = "Invalid phone number";
     if (showReferral2) {
       if (!form.referral2.name.trim()) next.referral2_name = "Required";
       if (!form.referral2.phone.trim()) next.referral2_phone = "Required";
-      else if (!/^[+\d\s-]{10,}$/.test(form.referral2.phone))
+      else if (!PHONE_RE.test(form.referral2.phone))
         next.referral2_phone = "Invalid phone number";
     }
     setErrors(next);
@@ -113,7 +117,9 @@ export function ReferralForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    if (honeypot) return;
     setSubmitting(true);
+    setSubmitError("");
     try {
       const referrals: ReferralEntry[] = [form.referral1];
       if (showReferral2) referrals.push(form.referral2);
@@ -128,7 +134,14 @@ export function ReferralForm() {
           referrals,
         }),
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const json = await res.json().catch(() => ({}));
+        setSubmitError((json as { error?: string }).error ?? "Submission failed. Please try again.");
+      }
+    } catch {
+      setSubmitError("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
@@ -157,6 +170,18 @@ export function ReferralForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Honeypot — invisible to real users, filled only by bots */}
+      <input
+        type="text"
+        name="_hp"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+      />
+
       {/* Your Information */}
       <div>
         <SectionHeading label="Your Information" step="01" />
@@ -261,6 +286,9 @@ export function ReferralForm() {
 
       {/* Submit */}
       <div className="pt-2 space-y-3">
+        {submitError && (
+          <p className="text-sm text-red-500 text-center">{submitError}</p>
+        )}
         <button
           type="submit"
           disabled={submitting}

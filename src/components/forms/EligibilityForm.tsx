@@ -6,34 +6,21 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const STEPS = [
-  {
-    title: "Personal Details",
-    fields: ["name", "phone", "email"] as const,
-  },
-  {
-    title: "Education Details",
-    fields: ["country", "university", "course"] as const,
-  },
-  {
-    title: "Financial Details",
-    fields: ["loanAmount", "familyIncome", "collateral"] as const,
-  },
+  { title: "Personal Details",  fields: ["name", "phone", "email"] as const },
+  { title: "Education Details", fields: ["country", "university", "course"] as const },
+  { title: "Financial Details", fields: ["loanAmount", "familyIncome", "collateral"] as const },
 ];
 
 const FIELD_LABELS: Record<string, { label: string; type: string; placeholder: string }> = {
-  name: { label: "Full Name", type: "text", placeholder: "Enter your full name" },
-  phone: { label: "Phone Number", type: "tel", placeholder: "+91 XXXXX XXXXX" },
-  email: { label: "Email Address", type: "email", placeholder: "your@email.com" },
-  country: { label: "Destination Country", type: "text", placeholder: "e.g. USA, UK, Italy" },
-  university: { label: "University", type: "text", placeholder: "Target university name" },
-  course: { label: "Course", type: "text", placeholder: "e.g. MS Computer Science" },
-  loanAmount: { label: "Loan Amount Required", type: "text", placeholder: "e.g. ₹40 Lakhs" },
-  familyIncome: { label: "Family Annual Income", type: "text", placeholder: "e.g. ₹8 Lakhs" },
-  collateral: {
-    label: "Collateral Availability",
-    type: "select",
-    placeholder: "Select option",
-  },
+  name:         { label: "Full Name",               type: "text",   placeholder: "Enter your full name" },
+  phone:        { label: "Phone Number",             type: "tel",    placeholder: "+91 XXXXX XXXXX" },
+  email:        { label: "Email Address",            type: "email",  placeholder: "your@email.com" },
+  country:      { label: "Destination Country",      type: "text",   placeholder: "e.g. USA, UK, Italy" },
+  university:   { label: "University",               type: "text",   placeholder: "Target university name" },
+  course:       { label: "Course",                   type: "text",   placeholder: "e.g. MS Computer Science" },
+  loanAmount:   { label: "Loan Amount Required",     type: "text",   placeholder: "e.g. ₹40 Lakhs" },
+  familyIncome: { label: "Family Annual Income",     type: "text",   placeholder: "e.g. ₹8 Lakhs" },
+  collateral:   { label: "Collateral Availability",  type: "select", placeholder: "Select option" },
 };
 
 const COLLATERAL_OPTIONS = [
@@ -44,53 +31,39 @@ const COLLATERAL_OPTIONS = [
 ];
 
 interface FormData {
-  name: string;
-  phone: string;
-  email: string;
-  country: string;
-  university: string;
-  course: string;
-  loanAmount: string;
-  familyIncome: string;
-  collateral: string;
+  name: string; phone: string; email: string;
+  country: string; university: string; course: string;
+  loanAmount: string; familyIncome: string; collateral: string;
 }
 
 const initialData: FormData = {
-  name: "",
-  phone: "",
-  email: "",
-  country: "",
-  university: "",
-  course: "",
-  loanAmount: "",
-  familyIncome: "",
-  collateral: "",
+  name: "", phone: "", email: "",
+  country: "", university: "", course: "",
+  loanAmount: "", familyIncome: "", collateral: "",
 };
 
 export function EligibilityForm() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const validateStep = (stepIndex: number): boolean => {
     const fields = STEPS[stepIndex].fields;
     const newErrors: Partial<FormData> = {};
 
     fields.forEach((field) => {
-      if (!data[field]?.trim()) {
-        newErrors[field] = "This field is required";
-      }
+      if (!data[field]?.trim()) newErrors[field] = "This field is required";
     });
 
     if (stepIndex === 0) {
-      if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
         newErrors.email = "Enter a valid email";
-      }
-      if (data.phone && !/^[+\d\s-]{10,}$/.test(data.phone)) {
+      if (data.phone && !/^[+\d\s\-()]{7,20}$/.test(data.phone))
         newErrors.phone = "Enter a valid phone number";
-      }
     }
 
     setErrors(newErrors);
@@ -98,16 +71,16 @@ export function EligibilityForm() {
   };
 
   const handleNext = () => {
-    if (validateStep(step)) {
-      setStep((s) => Math.min(s + 1, STEPS.length - 1));
-    }
+    if (validateStep(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1));
   };
 
   const handleBack = () => setStep((s) => Math.max(s - 1, 0));
 
   const handleSubmit = async () => {
     if (!validateStep(step)) return;
+    if (honeypot) return;
     setSubmitting(true);
+    setSubmitError("");
 
     try {
       const res = await fetch("/api/leads", {
@@ -115,9 +88,14 @@ export function EligibilityForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "eligibility", ...data }),
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const json = await res.json().catch(() => ({}));
+        setSubmitError((json as { error?: string }).error ?? "Submission failed. Please try again.");
+      }
     } catch {
-      setErrors({ name: "Submission failed. Please try again." });
+      setSubmitError("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
@@ -138,12 +116,10 @@ export function EligibilityForm() {
         <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
           <CheckCircle2 className="w-10 h-10 text-green-600" />
         </div>
-        <h3 className="text-2xl font-bold text-navy-900 mb-3">
-          Eligibility Check Submitted
-        </h3>
+        <h3 className="text-2xl font-bold text-navy-900 mb-3">Eligibility Check Submitted</h3>
         <p className="text-grey-500 max-w-md mx-auto">
-          Thank you! Our consultant will review your profile and respond within
-          1 to 2 hours with your eligibility assessment.
+          Thank you! Our consultant will review your profile and respond within 1 to 2 hours with
+          your eligibility assessment.
         </p>
       </motion.div>
     );
@@ -153,11 +129,21 @@ export function EligibilityForm() {
 
   return (
     <div className="max-w-xl mx-auto">
+      {/* Honeypot — invisible to real users, filled only by bots */}
+      <input
+        type="text"
+        name="_hp"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+      />
+
       <div className="mb-8">
         <div className="flex justify-between text-sm text-grey-500 mb-2">
-          <span>
-            Step {step + 1} of {STEPS.length}
-          </span>
+          <span>Step {step + 1} of {STEPS.length}</span>
           <span>{STEPS[step].title}</span>
         </div>
         <div className="h-2 bg-grey-200 rounded-full overflow-hidden">
@@ -180,26 +166,27 @@ export function EligibilityForm() {
         >
           {STEPS[step].fields.map((field) => {
             const config = FIELD_LABELS[field];
+            const inputId = `eligibility-${field}`;
             return (
               <div key={field}>
-                <label className="block text-sm font-semibold text-navy-900 mb-2">
+                <label htmlFor={inputId} className="block text-sm font-semibold text-navy-900 mb-2">
                   {config.label}
                 </label>
                 {config.type === "select" ? (
                   <select
+                    id={inputId}
                     value={data[field]}
                     onChange={(e) => updateField(field, e.target.value)}
                     className="w-full px-4 py-3 rounded-xl border border-grey-200 bg-white text-navy-900 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all"
                   >
                     <option value="">{config.placeholder}</option>
                     {COLLATERAL_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
+                      <option key={opt} value={opt}>{opt}</option>
                     ))}
                   </select>
                 ) : (
                   <input
+                    id={inputId}
                     type={config.type}
                     value={data[field]}
                     onChange={(e) => updateField(field, e.target.value)}
@@ -207,18 +194,20 @@ export function EligibilityForm() {
                     className="w-full px-4 py-3 rounded-xl border border-grey-200 bg-white text-navy-900 placeholder:text-grey-400 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all"
                   />
                 )}
-                {errors[field] && (
-                  <p className="mt-1 text-sm text-red-500">{errors[field]}</p>
-                )}
+                {errors[field] && <p className="mt-1 text-sm text-red-500">{errors[field]}</p>}
               </div>
             );
           })}
         </motion.div>
       </AnimatePresence>
 
+      {submitError && (
+        <p className="mt-4 text-sm text-red-500 text-center">{submitError}</p>
+      )}
+
       <div className="flex justify-between mt-8 gap-4">
         {step > 0 ? (
-          <MagneticButton variant="secondary" onClick={handleBack}>
+          <MagneticButton variant="secondary" onClick={handleBack} disabled={submitting}>
             <ArrowLeft className="w-4 h-4" />
             Back
           </MagneticButton>
@@ -231,7 +220,7 @@ export function EligibilityForm() {
             <ArrowRight className="w-4 h-4" />
           </MagneticButton>
         ) : (
-          <MagneticButton onClick={handleSubmit} type="submit">
+          <MagneticButton onClick={handleSubmit} type="submit" disabled={submitting}>
             {submitting ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (

@@ -12,6 +12,7 @@ interface MagneticButtonProps {
   className?: string;
   type?: "button" | "submit";
   external?: boolean;
+  disabled?: boolean;
 }
 
 const variants = {
@@ -33,10 +34,12 @@ export function MagneticButton({
   className = "",
   type = "button",
   external = false,
+  disabled = false,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: MouseEvent) => {
+    if (disabled) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -51,21 +54,21 @@ export function MagneticButton({
     el.style.transform = "translate(0, 0)";
   };
 
-  const baseClass = `inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${variants[variant]} ${className}`;
+  const baseClass = `inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${variants[variant]} ${disabled ? "opacity-60 cursor-not-allowed" : ""} ${className}`;
 
   const content = (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileTap={{ scale: 0.97 }}
+      whileTap={disabled ? {} : { scale: 0.97 }}
       className={baseClass}
     >
       {children}
     </motion.div>
   );
 
-  if (href) {
+  if (href && !disabled) {
     if (external) {
       return (
         <a href={href} target="_blank" rel="noopener noreferrer">
@@ -77,7 +80,12 @@ export function MagneticButton({
   }
 
   return (
-    <button type={type} onClick={onClick} className="border-0 bg-transparent p-0 cursor-pointer">
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className="border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed"
+    >
       {content}
     </button>
   );

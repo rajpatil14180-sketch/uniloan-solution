@@ -66,6 +66,8 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+    // Silently accept honeypot-filled submissions so bots get no signal
+    if (body._hp) return NextResponse.json({ success: true, id: randomUUID() }, { status: 201 });
     const now = new Date().toISOString();
     const id = randomUUID();
 

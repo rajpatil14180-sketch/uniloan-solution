@@ -62,6 +62,8 @@ export function HeroEligibilityForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [honeypot, setHoneypot] = useState("");
 
   const update = (field: keyof FormState, value: string) => {
     setForm((f) => {
@@ -81,7 +83,7 @@ export function HeroEligibilityForm() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       next.email = "Invalid email";
     if (!form.phone.trim()) next.phone = "Required";
-    else if (!/^[+\d\s-]{10,}$/.test(form.phone)) next.phone = "Invalid phone";
+    else if (!/^[+\d\s\-()]{7,20}$/.test(form.phone)) next.phone = "Invalid phone";
     if (!form.course) next.course = "Required";
     if (!form.destination) next.destination = "Required";
     if (form.destination === "Other" && !form.otherCountry.trim())
@@ -97,7 +99,9 @@ export function HeroEligibilityForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    if (honeypot) return;
     setSubmitting(true);
+    setSubmitError("");
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
@@ -116,7 +120,14 @@ export function HeroEligibilityForm() {
           source: "hero",
         }),
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const json = await res.json().catch(() => ({}));
+        setSubmitError((json as { error?: string }).error ?? "Submission failed. Please try again.");
+      }
+    } catch {
+      setSubmitError("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
@@ -162,6 +173,18 @@ export function HeroEligibilityForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Honeypot — invisible to real users, filled only by bots */}
+          <input
+            type="text"
+            name="_hp"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+          />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Full Name" error={errors.name}>
               <input
@@ -270,6 +293,10 @@ export function HeroEligibilityForm() {
               </div>
             </Field>
           </div>
+
+          {submitError && (
+            <p className="text-sm text-red-500 text-center">{submitError}</p>
+          )}
 
           <button
             type="submit"
