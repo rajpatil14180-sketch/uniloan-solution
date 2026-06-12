@@ -38,10 +38,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://uniloansolution.com",
     siteName: "Uniloan Solution",
-    images: [{ url: "/logo-official.png", alt: "Uniloan Solution" }],
-  },
-  icons: {
-    icon: "/logo-official.png",
+    images: [{ url: "/icon-512.png", width: 512, height: 512, alt: "Uniloan Solution" }],
   },
   verification: {
     google: "-m9Jyh5XvZ9satCNBI5pa3_juBM1z04bGfz1ciX7Sl0",
