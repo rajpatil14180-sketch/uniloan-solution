@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Partner With Us",
   description:
     "Partner with Uniloan Solution to offer your students access to 20+ education lenders. Ideal for study abroad consultants, schools, and education agencies.",
+  alternates: { canonical: "/partners" },
 };
 
 const BENEFITS = [

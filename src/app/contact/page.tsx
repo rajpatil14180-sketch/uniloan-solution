@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Contact Us",
   description:
     "Get in touch with Uniloan Solution. Our education loan experts respond within 1–2 hours. Call, email, or fill in the form.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

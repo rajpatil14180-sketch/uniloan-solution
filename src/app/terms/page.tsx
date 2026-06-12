@@ -4,6 +4,7 @@ import { SITE } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Terms of Service for Uniloan Solution — please read before using our website or services.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

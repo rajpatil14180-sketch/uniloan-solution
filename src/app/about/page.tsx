@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "About Us",
   description:
     "Learn about Uniloan Solution — India's specialized education loan consultancy helping students with difficult profiles secure loans from 20+ banks and NBFCs.",
+  alternates: { canonical: "/about" },
 };
 
 const VALUES = [

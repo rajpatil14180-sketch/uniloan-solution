@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Free Eligibility Check",
   description:
     "Check your education loan eligibility for free. Response within 1-2 hours from our dedicated consultants.",
+  alternates: { canonical: "/eligibility" },
 };
 
 export default function EligibilityPage() {

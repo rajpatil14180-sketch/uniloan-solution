@@ -17,6 +17,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://uniloansolution.com"),
   title: {
     default: "Uniloan Solution | Education Loan Consultancy",
     template: "%s | Uniloan Solution",
@@ -35,6 +36,9 @@ export const metadata: Metadata = {
     description:
       "Expert education loan consultancy for difficult profiles. 20+ banks & NBFCs. Free eligibility check.",
     type: "website",
+    url: "https://uniloansolution.com",
+    siteName: "Uniloan Solution",
+    images: [{ url: "/logo-official.png", alt: "Uniloan Solution" }],
   },
   icons: {
     icon: "/logo-official.png",

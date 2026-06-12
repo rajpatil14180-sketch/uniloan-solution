@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Refer & Earn | Uniloan Solution",
   description:
     "Refer a student to Uniloan Solution and earn rewards. Submit their details and we'll handle the rest.",
+  alternates: { canonical: "/refer" },
 };
 
 const HOW_IT_WORKS = [

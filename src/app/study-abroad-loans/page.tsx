@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Study Abroad Education Loans",
   description:
     "Comprehensive education loan solutions for students pursuing higher education at universities worldwide.",
+  alternates: { canonical: "/study-abroad-loans" },
 };
 
 export default function StudyAbroadLoansPage() {
