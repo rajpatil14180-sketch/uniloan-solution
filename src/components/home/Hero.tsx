@@ -38,10 +38,17 @@ export function Hero() {
     transition={{ duration: 0.6 }}
     className="flex justify-center lg:justify-start mb-10"
   >
+    {/* Mobile: square icon mark — bold and clearly visible */}
+    <img
+      src="/icon-512.png"
+      alt="Uniloan Solution"
+      className="h-24 w-24 object-contain md:hidden"
+    />
+    {/* Desktop: full wordmark */}
     <img
       src="/logo.png"
       alt="Uniloan Solution"
-      className="h-16 sm:h-20 md:h-36 lg:h-44 w-auto object-contain"
+      className="hidden md:block md:h-36 lg:h-44 w-auto object-contain"
     />
   </motion.div>
             <motion.h1
