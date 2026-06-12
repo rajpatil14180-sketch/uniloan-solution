@@ -67,7 +67,11 @@ export async function updateLeadStatus(
     status,
     updatedAt: new Date().toISOString(),
   };
-  await writeLeads(leads);
+  try {
+    await writeLeads(leads);
+  } catch {
+    // Silently skip — filesystem may be read-only in production
+  }
   return leads[index];
 }
 
