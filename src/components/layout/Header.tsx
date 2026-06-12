@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavbarLogo } from "./NavbarLogo";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/data";
@@ -36,8 +35,6 @@ export function Header() {
     scrolled ? "" : ""
   }`}
 >
-        <NavbarLogo />
-
         <nav className="hidden xl:flex items-center gap-0.5">
           {NAV_LINKS.map((link) => (
             <Link
