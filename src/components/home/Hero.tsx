@@ -38,13 +38,14 @@ export function Hero() {
     transition={{ duration: 0.6 }}
     className="flex justify-center lg:justify-start mb-10"
   >
-    {/* Mobile: square icon mark — bold and clearly visible */}
+    {/* Mobile: wordmark forced white so it pops on the dark navy hero */}
     <img
-      src="/icon-512.png"
+      src="/logo.png"
       alt="Uniloan Solution"
-      className="h-24 w-24 object-contain md:hidden"
+      className="md:hidden w-67.5 h-auto object-contain"
+      style={{ filter: "brightness(0) invert(1)" }}
     />
-    {/* Desktop: full wordmark */}
+    {/* Desktop: full wordmark at natural size */}
     <img
       src="/logo.png"
       alt="Uniloan Solution"
