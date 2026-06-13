@@ -6,6 +6,9 @@ import { appendLeadToSheet } from "./sheets";
 const DATA_DIR = path.join(process.cwd(), "data");
 const LEADS_FILE = path.join(DATA_DIR, "leads.json");
 
+// Serialize concurrent writes to prevent race-condition data loss
+let writeLock: Promise<void> = Promise.resolve();
+
 async function ensureDataDir() {
   try {
     await fs.access(DATA_DIR);
@@ -37,20 +40,27 @@ export async function getAllLeads(): Promise<Lead[]> {
 }
 
 export async function addLead(lead: Lead): Promise<Lead> {
-  // JSON file write works locally but will fail on Netlify (read-only filesystem) — that's fine
-  try {
-    const leads = await readLeads();
-    leads.push(lead);
-    await writeLeads(leads);
-  } catch {
-    // Silently skip — Google Sheets is the persistent store in production
-  }
+  // Chain onto the write lock so concurrent submissions don't overwrite each other
+  writeLock = writeLock.then(async () => {
+    try {
+      const leads = await readLeads();
+      leads.push(lead);
+      await writeLeads(leads);
+    } catch {
+      // Silently skip — Google Sheets is the persistent store in production
+    }
+  });
+  await writeLock;
 
   // Must be awaited — serverless functions shut down on response, fire-and-forget gets killed
   try {
     await appendLeadToSheet(lead);
   } catch (err) {
-    console.error("[sheets] failed to append lead:", err);
+    // Lead is still in the JSON backup, but log loudly so it's visible in Hostinger logs
+    console.error("=== SHEETS WRITE FAILED — LEAD ONLY IN LOCAL JSON ===");
+    console.error("Lead ID:", lead.id, "| Type:", lead.type, "| Phone:", lead.phone);
+    console.error("Error:", err);
+    console.error("======================================================");
   }
   return lead;
 }
@@ -99,17 +109,12 @@ export async function searchLeads(params: {
   return leads;
 }
 
+function csvCell(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
 export function leadsToCSV(leads: Lead[]): string {
-  const headers = [
-    "id",
-    "type",
-    "status",
-    "name",
-    "phone",
-    "email",
-    "createdAt",
-    "details",
-  ];
+  const headers = ["id", "type", "status", "name", "phone", "email", "createdAt", "details"];
   const rows = leads.map((lead) => {
     const base = {
       id: lead.id,
@@ -139,10 +144,7 @@ export function leadsToCSV(leads: Lead[]): string {
         message: lead.message,
       });
     } else if (lead.type === "service") {
-      base.details = JSON.stringify({
-        service: lead.service,
-        message: lead.message,
-      });
+      base.details = JSON.stringify({ service: lead.service, message: lead.message });
     } else if (lead.type === "referral") {
       base.details = JSON.stringify({ referrals: lead.referrals });
     } else {
@@ -150,14 +152,14 @@ export function leadsToCSV(leads: Lead[]): string {
     }
 
     return [
-      base.id,
-      base.type,
-      base.status,
-      `"${base.name}"`,
-      base.phone,
-      base.email,
-      base.createdAt,
-      `"${base.details.replace(/"/g, '""')}"`,
+      csvCell(base.id),
+      csvCell(base.type),
+      csvCell(base.status),
+      csvCell(base.name),
+      csvCell(base.phone),
+      csvCell(base.email),
+      csvCell(base.createdAt),
+      csvCell(base.details),
     ].join(",");
   });
 

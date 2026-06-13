@@ -33,6 +33,7 @@ const STATUS_COLORS: Record<LeadStatus, string> = {
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState(false);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -54,6 +55,10 @@ export default function AdminPage() {
       if (res.ok) {
         const data = await res.json();
         setLeads(data);
+      } else if (res.status === 401) {
+        setAuthenticated(false);
+        setAuthError(true);
+        sessionStorage.removeItem("admin_auth");
       }
     } finally {
       setLoading(false);
@@ -66,6 +71,7 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    setAuthError(false);
     setAuthenticated(true);
     sessionStorage.setItem("admin_auth", password);
   };
@@ -130,12 +136,17 @@ export default function AdminPage() {
             <h1 className="text-2xl font-bold text-navy-900">Admin Dashboard</h1>
             <p className="text-grey-500 text-sm mt-2">Uniloan Solution</p>
           </div>
+          {authError && (
+            <p className="mb-4 text-sm text-red-500 text-center bg-red-50 rounded-xl py-2 px-3">
+              Incorrect password. Please try again.
+            </p>
+          )}
           <input
             type="password"
             placeholder="Enter admin password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-grey-200 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+            onChange={(e) => { setPassword(e.target.value); setAuthError(false); }}
+            className={`w-full px-4 py-3 rounded-xl border mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500/30 ${authError ? "border-red-400" : "border-grey-200"}`}
           />
           <button
             type="submit"
