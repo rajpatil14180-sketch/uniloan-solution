@@ -159,7 +159,7 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
   await sheets.spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
     range: `${tab}!A:Z`,
-    valueInputOption: "USER_ENTERED",
+    valueInputOption: "RAW",
     requestBody: { values: rows },
   });
 
