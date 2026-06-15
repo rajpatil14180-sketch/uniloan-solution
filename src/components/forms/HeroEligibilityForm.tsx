@@ -57,7 +57,7 @@ const inputClass =
 const selectClass =
   "w-full px-4 py-3 rounded-xl border border-grey-200 bg-white text-navy-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all appearance-none cursor-pointer";
 
-export function HeroEligibilityForm() {
+export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
   const [form, setForm] = useState<FormState>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -117,7 +117,7 @@ export function HeroEligibilityForm() {
           loanAmount: form.loanAmount,
           familyIncome: "",
           collateral: "",
-          source: "hero",
+          source,
         }),
       });
       if (res.ok) {
