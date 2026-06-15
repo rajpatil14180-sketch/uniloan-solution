@@ -3,7 +3,7 @@ import { getCreator, CREATORS } from "@/lib/creators";
 import { HeroEligibilityForm } from "@/components/forms/HeroEligibilityForm";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Star, Shield, CheckCircle2 } from "lucide-react";
+import { Star, CheckCircle2 } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -27,7 +27,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const TRUST_POINTS = [
   "Free eligibility check — no fees",
-  "20+ lending partners",
   "Rates starting from 8.25%",
   "Non-collateral loans up to ₹70 lakhs",
 ];
@@ -143,7 +142,7 @@ export default async function CreatorPage({ params }: Props) {
           </div>
 
           {/* Trust points */}
-          <div className="grid grid-cols-2 gap-2 mb-8">
+          <div className="flex flex-col gap-2 mb-8">
             {TRUST_POINTS.map((point) => (
               <div key={point} className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-gold-400 shrink-0" />
@@ -155,15 +154,9 @@ export default async function CreatorPage({ params }: Props) {
           {/* Eligibility form */}
           <HeroEligibilityForm source={`creator-${slug}`} />
 
-          {/* Footer trust */}
-          <div className="mt-6 flex items-center justify-center gap-2 text-white/30 text-xs">
-            <Shield className="w-3.5 h-3.5" />
-            <span>Your information is secure and never shared</span>
-          </div>
-
-          <p className="text-center text-white/20 text-xs mt-4">
+          <p className="text-center text-white/20 text-xs mt-6">
             &copy; {new Date().getFullYear()} Uniloan Solution &middot;{" "}
-            <Link href="/privacy-policy" className="hover:text-white/40 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-white/40 transition-colors underline underline-offset-2">
               Privacy Policy
             </Link>
           </p>
