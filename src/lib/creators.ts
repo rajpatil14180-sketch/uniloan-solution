@@ -12,15 +12,14 @@ export interface Creator {
 
 export const CREATORS: Creator[] = [
   // ── ADD CREATORS HERE ──────────────────────────────────────────────────────
-  // {
-  //   slug: "rahul-sharma",
-  //   name: "Rahul Sharma",
-  //   handle: "@rahulsharmaofficial",
-  //   platform: "youtube",
-  //   photo: "rahul-sharma.jpg",   // place file in /public/creators/
-  //   message: "I personally recommend Uniloan Solution — they helped many of my viewers get education loans even for difficult profiles. Check your eligibility for free!",
-  //   subscribers: "500K subscribers",
-  // },
+  {
+    slug: "pooja-maske",
+    name: "Pooja Maske",
+    handle: "@poojaaaaaslife",
+    platform: "instagram",
+    // photo: "pooja-maske.jpg",  // drop her photo in /public/creators/ to enable
+    message: "Getting an education loan can feel overwhelming — I partnered with Uniloan Solution because they genuinely help students, even difficult profiles. Check your eligibility for free through my link!",
+  },
   // ───────────────────────────────────────────────────────────────────────────
 ];
 
