@@ -70,7 +70,7 @@ export default async function CreatorPage({ params }: Props) {
     .slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-navy-900">
+    <div className="min-h-screen bg-navy-900 overflow-hidden">
       {/* Minimal header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-navy-900/90 backdrop-blur-md border-b border-white/5">
         <div className="container-custom h-14 flex items-center justify-between">
@@ -91,9 +91,9 @@ export default async function CreatorPage({ params }: Props) {
         </div>
       </header>
 
-      <div className="relative overflow-x-hidden pt-14">
-        {/* Background glow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="relative pt-14">
+        {/* Background glow — translate-z-0 forces GPU layer so webkit clips the blur correctly */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ transform: "translateZ(0)" }}>
           <div className="absolute top-20 right-0 w-125 h-125 bg-purple-600/10 rounded-full blur-[120px]" />
           <div className="absolute bottom-0 left-0 w-100 h-100 bg-gold-500/5 rounded-full blur-[100px]" />
         </div>
