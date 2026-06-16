@@ -47,6 +47,14 @@ function getTabForLead(lead: Lead): string {
   }
 }
 
+// Prefix phone numbers with an apostrophe so Google Sheets (USER_ENTERED mode)
+// treats them as plain text instead of trying to evaluate +91... as a formula.
+// The apostrophe is a standard Sheets "force text" prefix — it never appears in the cell.
+function phone(p: string): string {
+  const trimmed = p.trim();
+  return trimmed ? `'${trimmed}` : "";
+}
+
 function leadToRow(lead: Lead): string[] {
   const date = new Date(lead.createdAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
@@ -54,7 +62,7 @@ function leadToRow(lead: Lead): string[] {
     case "eligibility":
       return [
         lead.id, date, lead.status, lead.source ?? "website",
-        lead.name, lead.phone, lead.email,
+        lead.name, phone(lead.phone), lead.email,
         lead.country, lead.university, lead.course,
         lead.loanAmount, lead.familyIncome, lead.collateral,
       ];
@@ -63,26 +71,26 @@ function leadToRow(lead: Lead): string[] {
       const r2 = lead.referrals[1];
       return [
         lead.id, date, lead.status,
-        lead.name, lead.phone, lead.email,
-        r1?.name ?? "", r1?.phone ?? "", r1?.country ?? "", r1?.loanAmount ?? "",
-        r2?.name ?? "", r2?.phone ?? "", r2?.country ?? "", r2?.loanAmount ?? "",
+        lead.name, phone(lead.phone), lead.email,
+        r1?.name ?? "", phone(r1?.phone ?? ""), r1?.country ?? "", r1?.loanAmount ?? "",
+        r2?.name ?? "", phone(r2?.phone ?? ""), r2?.country ?? "", r2?.loanAmount ?? "",
       ];
     }
     case "partner":
       return [
         lead.id, date, lead.status,
-        lead.contactName, lead.phone, lead.email,
+        lead.contactName, phone(lead.phone), lead.email,
         lead.organizationName, lead.organizationType, lead.message,
       ];
     case "service":
       return [
         lead.id, date, lead.status,
-        lead.name, lead.phone, lead.email, lead.service, lead.message,
+        lead.name, phone(lead.phone), lead.email, lead.service, lead.message,
       ];
     case "contact":
       return [
         lead.id, date, lead.status,
-        lead.name, lead.phone, lead.email, lead.message,
+        lead.name, phone(lead.phone), lead.email, lead.message,
       ];
   }
 }
@@ -101,15 +109,13 @@ async function ensureTabExists(
   spreadsheetId: string,
   tab: string
 ): Promise<boolean> {
-  // Check if tab exists
   try {
     await sheets.spreadsheets.values.get({
       spreadsheetId,
       range: `${tab}!A1:A1`,
     });
-    return true; // tab exists
+    return true;
   } catch {
-    // Tab doesn't exist — create it
     try {
       await sheets.spreadsheets.batchUpdate({
         spreadsheetId,
@@ -118,7 +124,7 @@ async function ensureTabExists(
         },
       });
       console.log("[sheets] Created tab:", tab);
-      return false; // tab was just created, needs headers
+      return false;
     } catch (createErr) {
       console.error("[sheets] Failed to create tab:", tab, createErr);
       throw createErr;
@@ -149,10 +155,8 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
   const sheets = google.sheets({ version: "v4", auth });
   const tab = getTabForLead(lead);
 
-  // Ensure the tab exists; if it was just created it returns false (needs headers)
   const tabExisted = await ensureTabExists(sheets, SPREADSHEET_ID, tab);
 
-  // Check if the existing tab already has headers in A1
   let hasHeaders = false;
   if (tabExisted) {
     try {
@@ -170,10 +174,12 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
   if (!hasHeaders) rows.push(TAB_HEADERS[tab]);
   rows.push(leadToRow(lead));
 
+  // USER_ENTERED preserves Unicode (₹, –, etc.) correctly.
+  // Phone numbers are prefixed with ' to prevent formula interpretation.
   await sheets.spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
     range: `${tab}!A:Z`,
-    valueInputOption: "RAW",
+    valueInputOption: "USER_ENTERED",
     requestBody: { values: rows },
   });
 
