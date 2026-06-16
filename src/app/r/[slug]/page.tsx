@@ -78,13 +78,13 @@ export default async function CreatorPage({ params }: Props) {
             <img
               src="/logo.png"
               alt="Uniloan Solution"
-              className="h-7 w-auto max-w-40 object-contain"
+              className="h-8 w-auto shrink-0 object-contain"
               style={{ filter: "brightness(0) invert(1)" }}
             />
           </Link>
           <Link
             href="/contact"
-            className="text-xs text-white/60 hover:text-white transition-colors"
+            className="hidden sm:block text-xs text-white/60 hover:text-white transition-colors whitespace-nowrap"
           >
             Need help? Contact us
           </Link>
