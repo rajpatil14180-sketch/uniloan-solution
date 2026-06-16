@@ -78,7 +78,7 @@ export default async function CreatorPage({ params }: Props) {
             <img
               src="/logo.png"
               alt="Uniloan Solution"
-              className="h-7 w-auto object-contain"
+              className="h-7 w-auto max-w-40 object-contain"
               style={{ filter: "brightness(0) invert(1)" }}
             />
           </Link>
@@ -91,7 +91,7 @@ export default async function CreatorPage({ params }: Props) {
         </div>
       </header>
 
-      <div className="pt-14">
+      <div className="relative overflow-x-hidden pt-14">
         {/* Background glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 right-0 w-125 h-125 bg-purple-600/10 rounded-full blur-[120px]" />
