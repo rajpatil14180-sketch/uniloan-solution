@@ -3,7 +3,7 @@ import { getCreator, CREATORS } from "@/lib/creators";
 import { HeroEligibilityForm } from "@/components/forms/HeroEligibilityForm";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Star, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -102,12 +102,6 @@ export default async function CreatorPage({ params }: Props) {
 
           {/* Creator card */}
           <div className="mb-8 text-center">
-            {/* Exclusive badge */}
-            <div className="inline-flex items-center gap-1.5 bg-gold-400/10 border border-gold-400/30 text-gold-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
-              <Star className="w-3 h-3 fill-gold-400" />
-              Exclusive Offer
-            </div>
-
             {/* Creator photo / initials fallback */}
             <div className="flex justify-center mb-4">
               {creator.photo ? (
@@ -132,13 +126,6 @@ export default async function CreatorPage({ params }: Props) {
               )}
             </div>
             <p className="text-sm text-white/40 mt-0.5">{creator.handle}</p>
-
-            {/* Creator message */}
-            <div className="mt-5 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-left">
-              <p className="text-sm text-white/80 leading-relaxed italic">
-                &ldquo;{creator.message}&rdquo;
-              </p>
-            </div>
           </div>
 
           {/* Trust points */}
