@@ -1,11 +1,21 @@
 import { google, sheets_v4 } from "googleapis";
 import type { Lead } from "./types";
 
+// Maps creator source values to their dedicated Google Sheets tab name.
+// Add an entry here whenever a new creator is added in src/lib/creators.ts.
+const CREATOR_TABS: Record<string, string> = {
+  "creator-pooja-maske": "Pooja Referral",
+};
+
+// Eligibility lead columns are reused for every creator tab
+const ELIGIBILITY_COLUMNS = [
+  "ID", "Date", "Status", "Source", "Name", "Phone", "Email",
+  "Country", "University", "Course", "Loan Amount", "Family Income", "Collateral",
+];
+
 const TAB_HEADERS: Record<string, string[]> = {
-  "Eligibility Leads": [
-    "ID", "Date", "Status", "Source", "Name", "Phone", "Email",
-    "Country", "University", "Course", "Loan Amount", "Family Income", "Collateral",
-  ],
+  "Eligibility Leads": ELIGIBILITY_COLUMNS,
+  "Pooja Referral":    ELIGIBILITY_COLUMNS,
   Referrals: [
     "ID", "Date", "Status", "Referrer Name", "Referrer Phone", "Referrer Email",
     "Ref1 Name", "Ref1 Phone", "Ref1 Country", "Ref1 Loan Amount",
@@ -24,6 +34,10 @@ const TAB_HEADERS: Record<string, string[]> = {
 };
 
 function getTabForLead(lead: Lead): string {
+  // Route creator referral leads to their own dedicated tab
+  if (lead.type === "eligibility" && lead.source && CREATOR_TABS[lead.source]) {
+    return CREATOR_TABS[lead.source];
+  }
   switch (lead.type) {
     case "eligibility": return "Eligibility Leads";
     case "referral":    return "Referrals";
