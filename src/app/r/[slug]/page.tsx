@@ -72,13 +72,13 @@ export default async function CreatorPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-navy-900 overflow-hidden">
       {/* Minimal header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-navy-900/90 backdrop-blur-md border-b border-white/5">
-        <div className="container-custom h-14 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-navy-900 border-b border-white/5">
+        <div className="container-custom h-16 flex items-center justify-between">
           <Link href="/">
             <img
               src="/logo.png"
               alt="Uniloan Solution"
-              className="h-8 w-auto shrink-0 object-contain"
+              className="h-10 w-auto shrink-0 object-contain"
               style={{ filter: "brightness(0) invert(1)" }}
             />
           </Link>
@@ -91,7 +91,7 @@ export default async function CreatorPage({ params }: Props) {
         </div>
       </header>
 
-      <div className="relative pt-14">
+      <div className="relative pt-16">
         {/* Background glow — translate-z-0 forces GPU layer so webkit clips the blur correctly */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ transform: "translateZ(0)" }}>
           <div className="absolute top-20 right-0 w-125 h-125 bg-purple-600/10 rounded-full blur-[120px]" />
