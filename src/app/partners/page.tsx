@@ -27,7 +27,7 @@ const BENEFITS = [
     icon: Users,
     title: "Student Success",
     description:
-      "Offer your students access to 20+ lenders with expertise in difficult profiles.",
+      "Offer your students access to our lender network with expertise in difficult profiles.",
   },
   {
     icon: Globe,
@@ -62,7 +62,7 @@ export default function PartnersPage() {
             </h1>
             <p className="mt-6 text-lg text-grey-300 max-w-2xl">
               Join our network of education partners and offer your students
-              premium education loan consultancy backed by 20+ lending partners.
+              premium education loan consultancy backed by our extensive lending network.
             </p>
           </ScrollReveal>
         </div>

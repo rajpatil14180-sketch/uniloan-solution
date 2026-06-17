@@ -55,8 +55,8 @@ export default function AboutPage() {
             </h1>
             <p className="mt-6 text-lg text-grey-300 max-w-2xl leading-relaxed">
               Uniloan Solution is a specialized education loan consultancy helping
-              Indian students secure financing for higher education. We work with a
-              network of 20+ leading banks and NBFCs, including cases previously
+              Indian students secure financing for higher education. We work across
+              leading banks and NBFCs, including cases previously
               rejected or considered difficult.
             </p>
           </ScrollReveal>

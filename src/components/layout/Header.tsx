@@ -35,6 +35,16 @@ export function Header() {
     scrolled ? "" : ""
   }`}
 >
+        {/* Logo — mobile only (hidden on xl+, where the hero section shows the logo) */}
+        <Link href="/" className="xl:hidden shrink-0">
+          <img
+            src="/logo.png"
+            alt="Uniloan Solution"
+            className="h-9 w-auto max-w-36 object-contain"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+        </Link>
+
         <nav className="hidden xl:flex items-center gap-0.5">
           {NAV_LINKS.map((link) => (
             <Link

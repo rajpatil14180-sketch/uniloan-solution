@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!creator) return {};
   return {
     title: `Education Loans — Exclusive via ${creator.name}`,
-    description: `Get a free education loan eligibility check through ${creator.name}'s exclusive link. 20+ lending partners, rates starting from 8.25%.`,
+    description: `Get a free education loan eligibility check through ${creator.name}'s exclusive link. Rates starting from 8.25%, non-collateral loans up to ₹70 lakhs.`,
     alternates: { canonical: `/r/${slug}` },
     robots: { index: false, follow: false },
   };

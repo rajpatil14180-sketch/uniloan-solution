@@ -10,7 +10,7 @@ const TRUST_BADGES = [
   "Interest Rates Starting From 8.25%",
   "Non-Collateral Loans Up To ₹60 Lakhs",
   "Free Eligibility Check",
-  "20+ Lending Partners",
+  "20+ Lending Partner Assisted",
 ];
 
 export function Hero() {

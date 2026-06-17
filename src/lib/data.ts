@@ -40,7 +40,7 @@ export const LENDING_PARTNERS = [
 ];
 
 export const STATS = [
-  { value: 20, suffix: "+", label: "Lending Partners" },
+  { value: 20, suffix: "+", label: "Lending Partner Assisted" },
   { value: 8.25, suffix: "%", label: "Rates Starting From", decimals: 2 },
   { value: 70, suffix: "L", prefix: "₹", label: "Non-Collateral Up To" },
   { value: 24, suffix: "/7", label: "Consultant Support" },
@@ -188,7 +188,7 @@ export const LOAN_SERVICES = {
     title: "Study Abroad Education Loans",
     headline: "Fund Your Global Education With Confidence",
     description:
-      "Comprehensive education loan solutions for students pursuing higher education at universities worldwide. From tuition to living expenses, we secure funding through 20+ lending partners.",
+      "Comprehensive education loan solutions for students pursuing higher education at universities worldwide. From tuition to living expenses, we secure funding through 20+ lending partner assisted.",
     benefits: [
       "Loans covering tuition, living expenses, travel, and related costs",
       "Interest rates starting from 8.25% per annum",

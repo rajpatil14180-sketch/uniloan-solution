@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Uniloan Solution",
   },
   description:
-    "Premium education loan consultancy with 20+ lending partners. Interest rates from 8.25%, non-collateral loans up to ₹70 lakhs. Free eligibility check.",
+    "Premium education loan consultancy, 20+ lending partner assisted. Interest rates from 8.25%, non-collateral loans up to ₹70 lakhs. Free eligibility check.",
   keywords: [
     "education loan",
     "study abroad loan",
