@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Uniloan Solution",
   },
   description:
-    "Premium education loan consultancy with 20+ lending partners. Interest rates from 8.25%, non-collateral loans up to ₹70 lakhs. Free eligibility check.",
+    "Premium education loan consultancy. Interest rates from 8.25%, non-collateral loans up to ₹70 lakhs. Free eligibility check.",
   keywords: [
     "education loan",
     "study abroad loan",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Uniloan Solution | Your Gateway To Study Abroad",
     description:
-      "Expert education loan consultancy for difficult profiles. 20+ banks & NBFCs. Free eligibility check.",
+      "Expert education loan consultancy for difficult profiles. Trusted banks & NBFCs. Free eligibility check.",
     type: "website",
     url: "https://uniloansolution.com",
     siteName: "Uniloan Solution",

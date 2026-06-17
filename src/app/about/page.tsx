@@ -7,7 +7,7 @@ import { FinalCTA } from "@/components/home/FinalCTA";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Learn about Uniloan Solution — India's specialized education loan consultancy helping students with difficult profiles secure loans from 20+ banks and NBFCs.",
+    "Learn about Uniloan Solution — India's specialized education loan consultancy helping students with difficult profiles secure education loans.",
   alternates: { canonical: "/about" },
 };
 
@@ -56,7 +56,7 @@ export default function AboutPage() {
             <p className="mt-6 text-lg text-grey-300 max-w-2xl leading-relaxed">
               Uniloan Solution is a specialized education loan consultancy helping
               Indian students secure financing for higher education. We work with a
-              network of 20+ leading banks and NBFCs, including cases previously
+              network of leading banks and NBFCs, including cases previously
               rejected or considered difficult.
             </p>
           </ScrollReveal>

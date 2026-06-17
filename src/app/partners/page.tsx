@@ -6,7 +6,7 @@ import { PartnerForm } from "@/components/forms/PartnerForm";
 export const metadata: Metadata = {
   title: "Partner With Us",
   description:
-    "Partner with Uniloan Solution to offer your students access to 20+ education lenders. Ideal for study abroad consultants, schools, and education agencies.",
+    "Partner with Uniloan Solution to offer your students access to trusted education lenders. Ideal for study abroad consultants, schools, and education agencies.",
   alternates: { canonical: "/partners" },
 };
 
@@ -27,7 +27,7 @@ const BENEFITS = [
     icon: Users,
     title: "Student Success",
     description:
-      "Offer your students access to 20+ lenders with expertise in difficult profiles.",
+      "Offer your students access to trusted lenders with expertise in difficult profiles.",
   },
   {
     icon: Globe,
@@ -62,7 +62,7 @@ export default function PartnersPage() {
             </h1>
             <p className="mt-6 text-lg text-grey-300 max-w-2xl">
               Join our network of education partners and offer your students
-              premium education loan consultancy backed by 20+ lending partners.
+              premium education loan consultancy backed by a trusted lending network.
             </p>
           </ScrollReveal>
         </div>

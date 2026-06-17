@@ -13,7 +13,7 @@ export function Footer() {
           <div className="lg:col-span-1 flex flex-col items-center text-center">
             <BrandLogo size="footer" className="mx-auto mb-5" />
             <p className="text-grey-400 text-sm leading-relaxed mb-6 max-w-xs mx-auto">
-              Expert education loan consultancy with 20+ lending partners,
+              Expert education loan consultancy with a trusted lending network,
               dedicated consultant support, and specialization in difficult
               profiles.
             </p>
