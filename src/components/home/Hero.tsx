@@ -42,6 +42,8 @@ export function Hero() {
     <img
       src="/logo.png"
       alt="Uniloan Solution"
+      width={270}
+      height={68}
       className="md:hidden w-67.5 h-auto object-contain"
       style={{ filter: "brightness(0) invert(1)" }}
     />
@@ -49,6 +51,8 @@ export function Hero() {
     <img
       src="/logo.png"
       alt="Uniloan Solution"
+      width={400}
+      height={100}
       className="hidden md:block md:h-36 lg:h-44 w-auto object-contain"
     />
   </motion.div>

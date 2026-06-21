@@ -40,6 +40,8 @@ export function Header() {
           <img
             src="/logo.png"
             alt="Uniloan Solution"
+            width={200}
+            height={50}
             className="h-9 w-auto max-w-36 object-contain"
             style={{ filter: "brightness(0) invert(1)" }}
           />
@@ -57,24 +59,24 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-3 shrink-0">
           <MagneticButton
             href={`https://wa.me/${SITE.whatsapp}`}
             variant="whatsapp"
             external
-            className="!px-4 !py-2.5 !text-sm"
+            className="px-4! py-2.5! text-sm!"
           >
             <MessageCircle className="w-4 h-4" />
             WhatsApp
           </MagneticButton>
-          <MagneticButton href="/eligibility" className="!px-5 !py-2.5 !text-sm">
+          <MagneticButton href="/eligibility" className="px-5! py-2.5! text-sm!">
             Check Eligibility
           </MagneticButton>
         </div>
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="xl:hidden p-2 text-white cursor-pointer flex-shrink-0"
+          className="xl:hidden p-2 text-white cursor-pointer shrink-0"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -186,8 +186,9 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Full Name" error={errors.name}>
+            <Field label="Full Name" error={errors.name} id="hef-name">
               <input
+                id="hef-name"
                 type="text"
                 placeholder="Enter your full name"
                 value={form.name}
@@ -195,8 +196,9 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
                 className={inputClass}
               />
             </Field>
-            <Field label="Email Address" error={errors.email}>
+            <Field label="Email Address" error={errors.email} id="hef-email">
               <input
+                id="hef-email"
                 type="email"
                 placeholder="your@email.com"
                 value={form.email}
@@ -207,8 +209,9 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Phone Number" error={errors.phone}>
+            <Field label="Phone Number" error={errors.phone} id="hef-phone">
               <input
+                id="hef-phone"
                 type="tel"
                 placeholder="+91 XXXXX XXXXX"
                 value={form.phone}
@@ -216,9 +219,10 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
                 className={inputClass}
               />
             </Field>
-            <Field label="Course" error={errors.course}>
+            <Field label="Course" error={errors.course} id="hef-course">
               <div className="relative">
                 <select
+                  id="hef-course"
                   value={form.course}
                   onChange={(e) => update("course", e.target.value)}
                   className={`${selectClass} ${!form.course ? "text-grey-400" : ""}`}
@@ -237,9 +241,10 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-4">
-              <Field label="Study Destination" error={errors.destination}>
+              <Field label="Study Destination" error={errors.destination} id="hef-destination">
                 <div className="relative">
                   <select
+                    id="hef-destination"
                     value={form.destination}
                     onChange={(e) => update("destination", e.target.value)}
                     className={`${selectClass} ${!form.destination ? "text-grey-400" : ""}`}
@@ -262,8 +267,9 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Field label="Country Name" error={errors.otherCountry}>
+                    <Field label="Country Name" error={errors.otherCountry} id="hef-other-country">
                       <input
+                        id="hef-other-country"
                         type="text"
                         placeholder="Enter country name"
                         value={form.otherCountry}
@@ -275,9 +281,10 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
                 )}
               </AnimatePresence>
             </div>
-            <Field label="Loan Amount Required" error={errors.loanAmount}>
+            <Field label="Loan Amount Required" error={errors.loanAmount} id="hef-loan-amount">
               <div className="relative">
                 <select
+                  id="hef-loan-amount"
                   value={form.loanAmount}
                   onChange={(e) => update("loanAmount", e.target.value)}
                   className={`${selectClass} ${!form.loanAmount ? "text-grey-400" : ""}`}
@@ -328,15 +335,17 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
 function Field({
   label,
   error,
+  id,
   children,
 }: {
   label: string;
   error?: string;
+  id?: string;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-navy-800 mb-1.5 tracking-wide">
+      <label htmlFor={id} className="block text-xs font-semibold text-navy-800 mb-1.5 tracking-wide">
         {label}
       </label>
       {children}

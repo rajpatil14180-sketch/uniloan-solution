@@ -10,6 +10,8 @@ function LogoMark({ className = "" }: { className?: string }) {
     <img
       src="/logo.png"
       alt="Uniloan Logo"
+      width={200}
+      height={50}
       className={`${className} object-contain`}
     />
   );
@@ -26,7 +28,7 @@ export function BrandLogo({
 
   return (
     <div className={`inline-flex items-center justify-center ${className}`}>
-      <LogoMark className={`${markSize} flex-shrink-0`} />
+      <LogoMark className={`${markSize} shrink-0`} />
     </div>
   );
 }

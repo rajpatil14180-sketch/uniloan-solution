@@ -78,6 +78,8 @@ export default async function CreatorPage({ params }: Props) {
             <img
               src="/logo.png"
               alt="Uniloan Solution"
+              width={200}
+              height={50}
               className="h-10 w-auto shrink-0 object-contain"
               style={{ filter: "brightness(0) invert(1)" }}
             />

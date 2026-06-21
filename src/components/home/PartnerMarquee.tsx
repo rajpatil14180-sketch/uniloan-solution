@@ -51,7 +51,7 @@ export function PartnerMarquee() {
   const partners = [...LENDING_PARTNERS, ...LENDING_PARTNERS];
 
   return (
-    <section className="section-padding bg-white overflow-hidden">
+    <section className="section-padding bg-white overflow-hidden" aria-label="Supported Financial Institutions">
       <div className="container-custom mb-12">
         <ScrollReveal className="text-center">
           <h2
