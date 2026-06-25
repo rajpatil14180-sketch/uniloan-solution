@@ -120,9 +120,10 @@ export function ContactForm() {
                     <input
                       required
                       type="tel"
+                      inputMode="tel"
                       placeholder="Phone"
                       value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^\d+\s\-()]/g, "") })}
                       className="w-full px-4 py-3 rounded-xl border border-grey-200 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500"
                     />
                     <input

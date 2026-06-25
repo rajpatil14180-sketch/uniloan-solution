@@ -213,9 +213,10 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
               <input
                 id="hef-phone"
                 type="tel"
+                inputMode="tel"
                 placeholder="+91 XXXXX XXXXX"
                 value={form.phone}
-                onChange={(e) => update("phone", e.target.value)}
+                onChange={(e) => update("phone", e.target.value.replace(/[^\d+\s\-()]/g, ""))}
                 className={inputClass}
               />
             </Field>
@@ -308,7 +309,7 @@ export function HeroEligibilityForm({ source = "hero" }: { source?: string }) {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full mt-2 flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 hover:from-purple-500 hover:to-purple-400 transition-all duration-300 disabled:opacity-70 cursor-pointer"
+            className="w-full mt-2 flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-linear-to-r from-purple-600 to-purple-500 text-white font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 hover:from-purple-500 hover:to-purple-400 transition-all duration-300 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="w-4 h-4 animate-spin" />

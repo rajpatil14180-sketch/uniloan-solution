@@ -132,9 +132,10 @@ export function PartnerForm() {
         <div>
           <input
             type="tel"
+            inputMode="tel"
             placeholder="Phone Number"
             value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
+            onChange={(e) => update("phone", e.target.value.replace(/[^\d+\s\-()]/g, ""))}
             className={fieldClass}
           />
           {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}

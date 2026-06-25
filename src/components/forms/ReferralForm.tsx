@@ -202,10 +202,11 @@ export function ReferralForm() {
             <Field label="Contact Number" error={errors.phone}>
               <input
                 type="tel"
+                inputMode="tel"
                 placeholder="+91 XXXXX XXXXX"
                 value={form.phone}
                 onChange={(e) => {
-                  setForm((f) => ({ ...f, phone: e.target.value }));
+                  setForm((f) => ({ ...f, phone: e.target.value.replace(/[^\d+\s\-()]/g, "") }));
                   clearError("phone");
                 }}
                 className={inputClass}
@@ -292,7 +293,7 @@ export function ReferralForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 hover:from-purple-500 hover:to-purple-400 transition-all duration-300 disabled:opacity-70 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-linear-to-r from-purple-600 to-purple-500 text-white font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 hover:from-purple-500 hover:to-purple-400 transition-all duration-300 disabled:opacity-70 cursor-pointer"
         >
           {submitting ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -317,7 +318,7 @@ export function ReferralForm() {
 function SectionHeading({ label, step }: { label: string; step: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="w-7 h-7 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center flex-shrink-0">
+      <span className="w-7 h-7 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center shrink-0">
         {step}
       </span>
       <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wider">
@@ -352,9 +353,10 @@ function ReferralCard({
         <Field label="Contact Number" error={errors.phone}>
           <input
             type="tel"
+            inputMode="tel"
             placeholder="+91 XXXXX XXXXX"
             value={data.phone}
-            onChange={(e) => onChange("phone", e.target.value)}
+            onChange={(e) => onChange("phone", e.target.value.replace(/[^\d+\s\-()]/g, ""))}
             className={inputClass}
           />
         </Field>

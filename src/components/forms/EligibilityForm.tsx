@@ -148,7 +148,7 @@ export function EligibilityForm() {
         </div>
         <div className="h-2 bg-grey-200 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-purple-600 to-gold-400 rounded-full"
+            className="h-full bg-linear-to-r from-purple-600 to-gold-400 rounded-full"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4 }}
           />
@@ -188,8 +188,9 @@ export function EligibilityForm() {
                   <input
                     id={inputId}
                     type={config.type}
+                    inputMode={config.type === "tel" ? "tel" : undefined}
                     value={data[field]}
-                    onChange={(e) => updateField(field, e.target.value)}
+                    onChange={(e) => updateField(field, config.type === "tel" ? e.target.value.replace(/[^\d+\s\-()]/g, "") : e.target.value)}
                     placeholder={config.placeholder}
                     className="w-full px-4 py-3 rounded-xl border border-grey-200 bg-white text-navy-900 placeholder:text-grey-400 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all"
                   />
